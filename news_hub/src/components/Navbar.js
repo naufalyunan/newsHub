@@ -12,13 +12,28 @@ export default function NavigationBar () {
 					<Link className="nav nav-link" to="/">
 						Home
 					</Link>
-					<Link className="nav nav-link" to="/images">
-						Images
-					</Link>
 				</Nav>
 				<Nav>
-					<Link className="nav nav-link" to="/favorites">
-						Favorites
+					<Link className="nav nav-link" to="/business">
+						Business
+					</Link>
+					<Nav.Link></Nav.Link>
+				</Nav>
+                <Nav>
+					<Link className="nav nav-link" to="/entertainment">
+						Entertainment
+					</Link>
+					<Nav.Link></Nav.Link>
+				</Nav>
+                <Nav>
+					<Link className="nav nav-link" to="/science">
+						Science
+					</Link>
+					<Nav.Link></Nav.Link>
+				</Nav>
+                <Nav>
+					<Link className="nav nav-link" to="/technology">
+						Technology
 					</Link>
 					<Nav.Link></Nav.Link>
 				</Nav>

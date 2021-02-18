@@ -13,7 +13,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Carousel } from 'bootstrap';
 import allActions from './store/actions/index'
 import { fetchHospitals } from './store/actions/maps';
+import dotenv from 'dotenv'
 
+
+const mapApi = process.env.REACT_APP_API_KEY
 function App() {
   useEffect(() => {
     dispatch(fetchHospitals('https://lintangwisesa.github.io/Indonesia-Covid19-Maps/data/rumah_sakit/Jakarta.json'))
@@ -34,7 +37,7 @@ function App() {
       <div className="App">
         <NavigationBar/>
         <Route exact path="/">
-          <MapGoogle data={ maps }/>
+          <MapGoogle data={ maps } mapApiKey= { mapApi }/>
         </Route>
         <Route path="/business">
         </Route>

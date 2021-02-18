@@ -8,10 +8,11 @@ export default function MapGoogle (props) {
     }
     const { data } = props
     const defaultCenter = { lat: -6.3, lng: 106.7 }
-
+    const { mapApiKey } = props
+    // console.log(mapApiKey)
     return (
         <LoadScript
-            googleMapsApiKey=''
+            googleMapsApiKey= { mapApiKey }
             >
                 <GoogleMap
                     mapContainerStyle={ mapStyles }

@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
 import newsReducer from './newsReducer'
+import mapReducer from './mapsReducer'
 
-const rootReducer = combineReducers({
+const rootReducers = combineReducers({
+    maps: mapReducer,
     news: newsReducer
 })
 
-export default rootReducer
+export default rootReducers

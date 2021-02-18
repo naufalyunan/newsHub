@@ -11,7 +11,7 @@ export default function MapGoogle (props) {
 
     return (
         <LoadScript
-            googleMapsApiKey='AIzaSyDWY2bW9byG04lbV0BS565xCsXt2m27Ez0'
+            googleMapsApiKey=''
             >
                 <GoogleMap
                     mapContainerStyle={ mapStyles }

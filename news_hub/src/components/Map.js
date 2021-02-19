@@ -7,9 +7,9 @@ export default function MapGoogle (props) {
         height: '100vh'
     }
     const { data } = props
-    const defaultCenter = { lat: -6.3, lng: 106.7 }
+    const { defaultCenter } = props
     const { mapApiKey } = props
-    // console.log(mapApiKey)
+    console.log(defaultCenter)
     return (
         <LoadScript
             googleMapsApiKey= { mapApiKey }

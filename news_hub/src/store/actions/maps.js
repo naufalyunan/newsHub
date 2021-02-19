@@ -31,7 +31,7 @@ export const setCurPos = (curPos) => {
 
 export const fetchPosition = () => {
     return (dispatch) => {
-        navigator.geolocation.getCurrentPosition(position => {
+        navigator.geolocation.watchPosition(position => {
             let currentPosition = {
               lat: position.coords.latitude, 
               lng: position.coords.longitude

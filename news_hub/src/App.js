@@ -14,7 +14,6 @@ import { Carousel } from 'bootstrap';
 import allActions from './store/actions/index'
 import { fetchHospitals, fetchPosition } from './store/actions/maps';
 
-
 const mapApi = process.env.REACT_APP_API_KEY
 function App() {
   const dispatch = useDispatch()

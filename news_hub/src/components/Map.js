@@ -1,25 +1,40 @@
 import React from 'react'
-import { GoogleMap, LoadScript, Marker, Polygon, InfoWindow, useLoadScript } from '@react-google-maps/api'
+import { GoogleMap, PolygonProps, Marker, Polygon, InfoWindow, useLoadScript } from '@react-google-maps/api'
 import jakartaDb from './../jakarta.json'
+import { useSelector } from 'react-redux'
 
 export default function MapGoogle (props) {
     const mapStyles = {
         width: '100vw',
         height: '80vh'
     }
-
+    
+    let currentPosition = useSelector(state => state.maps.currentPosition)
     const { data } = props
     const { defaultCenter } = props
     const { mapApiKey } = props
+    const { libraries } = props
+    
 
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: mapApiKey
-        
+        googleMapsApiKey: mapApiKey,
+        libraries
     })
+
+    
 
     if (loadError) return "Error loading maps"
     if (!isLoaded) return "Loading..."
-
+    
+    let curLoc = new window.google.maps.LatLng(currentPosition.lat, currentPosition.lng)
+    const clickArea = (e) => {
+        // console.log(e.latLng);
+        // console.log(window.google);
+        console.log(curLoc)
+    }
+    // console.log(currentPosition);
+    // console.log(curLoc);
+    // console.log(window.PolyGeometry)
     return (
         <div>
             <GoogleMap
@@ -45,19 +60,21 @@ export default function MapGoogle (props) {
                     })
                 }
                 {
-                    jakartaDb.features.map(el => {
+                    jakartaDb.features.map((el, i) => {
                         return (
-                            <div>
+                            <div key={i}>
                                 {
-                                    el.geometry.coordinates.map(li => {
+                                    el.geometry.coordinates.map((li, i) => {
                                         return (
-                                            <div>
+                                            <div key={i}>
                                                 {
-                                                    li.map(e => {
-                                                        console.log(e);
+                                                    li.map((e,i) => {
                                                         let coord = []
+                                                        console.log(curLoc)
+                                                        // console.log(typeof(curLoc.lat));
+                                                        // console.log(resultColor);
                                                         return (
-                                                            <div>
+                                                            <div key={i}>
                                                                 {
                                                                     e.map(element => {
                                                                         coord.push({
@@ -66,17 +83,20 @@ export default function MapGoogle (props) {
                                                                         })
                                                                     })
                                                                 }
+                                                                {/* let resultColor = new window.google.maps.geometry.poly.containsLocation(curLoc, coord) ? "#0000ff" : "#FF0000" */}
                                                                 <Polygon
                                                                     key={el.properties.KEL_NAME}
                                                                     path={coord}
                                                                     options= {{
                                                                         strokeColor: "#FF0000",
-                                                                        strokeOpacity: 0.8,
+                                                                        strokeOpacity: 0.5,
                                                                         strokeWeight: 2,
                                                                         fillColor: "#FF0000",
                                                                         fillOpacity: 0.2
                                                                     }}
+                                                                    onClick = {clickArea}
                                                                 />
+                                                                
                                                             </div>
                                                         )
                                                     })   

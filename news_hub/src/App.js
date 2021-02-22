@@ -15,20 +15,22 @@ import allActions from './store/actions/index'
 import { fetchHospitals, fetchPosition } from './store/actions/maps';
 
 const mapApi = process.env.REACT_APP_API_KEY
+const libs = [process.env.REACT_APP_LIBRARIES]
+
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchPosition())
     dispatch(fetchHospitals('https://lintangwisesa.github.io/Indonesia-Covid19-Maps/data/rumah_sakit/Jakarta.json'))
   },[])
-  const maps = useSelector(state => state.maps.hospitals)
+  const hospitals = useSelector(state => state.maps.hospitals)
   let currentPosition = useSelector(state => state.maps.currentPosition)
   return (
     <Router>
       <div className="App">
         <NavigationBar/>
         <Route exact path="/">
-          <MapGoogle data={ maps } mapApiKey= { mapApi } defaultCenter = {currentPosition}/>
+          <MapGoogle data={ hospitals } mapApiKey= { mapApi } libraries={ libs } defaultCenter = {currentPosition}/>
         </Route>
         <Route path="/business">
         </Route>

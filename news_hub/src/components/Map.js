@@ -1,5 +1,5 @@
 import React from 'react'
-import { GoogleMap, LoadScript, Marker, Polygon } from '@react-google-maps/api'
+import { GoogleMap, LoadScript, Marker, Polygon, InfoWindow, useLoadScript } from '@react-google-maps/api'
 import jakartaDb from './../jakarta.json'
 
 export default function MapGoogle (props) {
@@ -7,265 +7,90 @@ export default function MapGoogle (props) {
         width: '100vw',
         height: '80vh'
     }
-    
-    const contoh = [
-        [
-            106.80061400023759,
-            -6.142913999881006
-        ],
-        [
-            106.80071899968381,
-            -6.145147000333608
-        ],
-        [
-            106.80084400005225,
-            -6.146768999589456
-        ],
-        [
-            106.80085899984462,
-            -6.147045999772852
-        ],
-        [
-            106.80090921644162,
-            -6.147614818643257
-        ],
-        [
-            106.80091399968308,
-            -6.147668999724421
-        ],
-        [
-            106.80093940087674,
-            -6.1484090845896215
-        ],
-        [
-            106.79951800005738,
-            -6.1485800003666204
-        ],
-        [
-            106.79891800026715,
-            -6.148699999605163
-        ],
-        [
-            106.79851499966922,
-            -6.148780999743116
-        ],
-        [
-            106.79836499994644,
-            -6.148817999650833
-        ],
-        [
-            106.7982089999471,
-            -6.1488429999044145
-        ],
-        [
-            106.79781099957962,
-            -6.14889799974277
-        ],
-        [
-            106.79734200043465,
-            -6.148953999627226
-        ],
-        [
-            106.79653299999966,
-            -6.1490690004339115
-        ],
-        [
-            106.79426000040036,
-            -6.149342000432778
-        ],
-        [
-            106.79362762710974,
-            -6.149537974838689
-        ],
-        [
-            106.79280846439353,
-            -6.149873534669855
-        ],
-        [
-            106.79273500022177,
-            -6.149730000339123
-        ],
-        [
-            106.79242100013077,
-            -6.14910000006474
-        ],
-        [
-            106.792089000109,
-            -6.14837299981393
-        ],
-        [
-            106.79128599995062,
-            -6.147126999910915
-        ],
-        [
-            106.79034199958525,
-            -6.145609000055145
-        ],
-        [
-            106.78897700000145,
-            -6.143287999999974
-        ],
-        [
-            106.78869532388187,
-            -6.142671256489045
-        ],
-        [
-            106.79047885757129,
-            -6.142401165341092
-        ],
-        [
-            106.79057899999383,
-            -6.142385999999883
-        ],
-        [
-            106.7915639999989,
-            -6.142662799999915
-        ],
-        [
-            106.79196499999891,
-            -6.1427969999999155
-        ],
-        [
-            106.79206829999893,
-            -6.143008999999924
-        ],
-        [
-            106.79207007413234,
-            -6.14301268237926
-        ],
-        [
-            106.79210900013194,
-            -6.143008999765309
-        ],
-        [
-            106.79246500036116,
-            -6.14298300036503
-        ],
-        [
-            106.79345600000148,
-            -6.142900999999956
-        ],
-        [
-            106.79525000000152,
-            -6.142684000000025
-        ],
-        [
-            106.79742899995007,
-            -6.142464999859692
-        ],
-        [
-            106.79824900000152,
-            -6.142378999999991
-        ],
-        [
-            106.79838660000149,
-            -6.142355799999983
-        ],
-        [
-            106.79873830000149,
-            -6.142296400000019
-        ],
-        [
-            106.79938600000152,
-            -6.142187000000025
-        ],
-        [
-            106.79939935620759,
-            -6.142185439280152
-        ],
-        [
-            106.79983100000149,
-            -6.142134999999985
-        ],
-        [
-            106.80057800000147,
-            -6.142063999999974
-        ],
-        [
-            106.80061400023759,
-            -6.142913999881006
-        ]
-    ]
-
-    let sample = []
-    for (let i = 0; i < contoh.length; i++) {
-        sample.push({
-            lat: contoh[i][1],
-            lng: contoh[i][0]
-        })
-    }
 
     const { data } = props
     const { defaultCenter } = props
     const { mapApiKey } = props
 
+    const { isLoaded, loadError } = useLoadScript({
+        googleMapsApiKey: mapApiKey
+        
+    })
+
+    if (loadError) return "Error loading maps"
+    if (!isLoaded) return "Loading..."
+
     return (
-        <LoadScript
-            googleMapsApiKey= { mapApiKey }
+        <div>
+            <GoogleMap
+                mapContainerStyle={ mapStyles }
+                zoom={13}
+                center={defaultCenter}
             >
-                <GoogleMap
-                    mapContainerStyle={ mapStyles }
-                    zoom={13}
-                    center={defaultCenter}
-                >
-                    {
-                        data.map(el => {
-                            return(
-                                <Marker 
-                                key={el.nama} 
-                                position={{lat: el.latitude,lng: el.longitude}}
-                                label={el.nama}
-                                />
-                            )
-                        })
-                    }
-                    {/* <Polygon
-                        key={1}
-                        path={sample}
-                        options= {{
-                            strokeColor: "#FF0000",
-                            strokeOpacity: 0.8,
-                            strokeWeight: 2,
-                            fillColor: "#FF0000",
-                            fillOpacity: 0.2
-                        }}
-                    /> */}
-                    {
-                        jakartaDb.features.forEach(el => {
-                            // console.log(el.properties.KEL_NAME);
-                            jakartaDb.features[130].geometry.coordinates.map(li => {
-                                console.log(li);
-                                li.map(e => {
-                                    console.log('---');
-                                    console.log(e);
-                                    let coord = []
-                                    e.map(element => {
-                                        coord.push({
-                                            lat: element[1],
-                                            lng: element[0]
-                                        })
+                {
+                    data.map(el => {
+                        return(
+                            <Marker 
+                            key={el.nama} 
+                            position={{lat: el.latitude,lng: el.longitude}}
+                            label={el.nama}
+                            icon={{
+                                url: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Red_Cross_icon.svg/64px-Red_Cross_icon.svg.png",
+                                scaledSize: new window.google.maps.Size(20,20),
+                                origin: new window.google.maps.Point(0,0),
+                                anchor: new window.google.maps.Point(10,10)
+                            }}
+                            />
+                        )
+                    })
+                }
+                {
+                    jakartaDb.features.map(el => {
+                        return (
+                            <div>
+                                {
+                                    el.geometry.coordinates.map(li => {
+                                        return (
+                                            <div>
+                                                {
+                                                    li.map(e => {
+                                                        console.log(e);
+                                                        let coord = []
+                                                        return (
+                                                            <div>
+                                                                {
+                                                                    e.map(element => {
+                                                                        coord.push({
+                                                                            lat: element[1],
+                                                                            lng: element[0]
+                                                                        })
+                                                                    })
+                                                                }
+                                                                <Polygon
+                                                                    key={el.properties.KEL_NAME}
+                                                                    path={coord}
+                                                                    options= {{
+                                                                        strokeColor: "#FF0000",
+                                                                        strokeOpacity: 0.8,
+                                                                        strokeWeight: 2,
+                                                                        fillColor: "#FF0000",
+                                                                        fillOpacity: 0.2
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                        )
+                                                    })   
+                                                }
+                                            </div>
+                                        )
                                     })
-                                    // console.log(coord)
-                                    return(
-                                        <Polygon
-                                            key={1}
-                                            path={coord}
-                                            options= {{
-                                                strokeColor: "#FF0000",
-                                                strokeOpacity: 0.8,
-                                                strokeWeight: 2,
-                                                fillColor: "#FF0000",
-                                                fillOpacity: 0.2
-                                            }}
-                                        />
-                                    )
-                                })
-                            })
-                        })
-                    }
-                    
-                </GoogleMap>
-        </LoadScript>
+                                }
+                            </div>
+                        )
+                    })
+                }
+            </GoogleMap>
+        </div>
         
     )
 }

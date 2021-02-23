@@ -12,7 +12,7 @@ import {
 } from 'react-router-dom'
 import { Carousel } from 'bootstrap';
 import allActions from './store/actions/index'
-import { fetchHospitals, fetchPosition } from './store/actions/maps';
+import { fetchHospitals, fetchDefaultPosition, fetchCurrentPosition } from './store/actions/maps';
 
 const mapApi = process.env.REACT_APP_API_KEY
 const libs = [process.env.REACT_APP_LIBRARIES]
@@ -20,17 +20,18 @@ const libs = [process.env.REACT_APP_LIBRARIES]
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
-    dispatch(fetchPosition())
+    dispatch(fetchDefaultPosition())
+    dispatch(fetchCurrentPosition())
     dispatch(fetchHospitals('https://lintangwisesa.github.io/Indonesia-Covid19-Maps/data/rumah_sakit/Jakarta.json'))
   },[])
   const hospitals = useSelector(state => state.maps.hospitals)
-  let currentPosition = useSelector(state => state.maps.currentPosition)
+  let defaultPosition = useSelector(state => state.maps.defaultPosition)
   return (
     <Router>
       <div className="App">
         <NavigationBar/>
         <Route exact path="/">
-          <MapGoogle data={ hospitals } mapApiKey= { mapApi } libraries={ libs } defaultCenter = {currentPosition}/>
+          <MapGoogle data={ hospitals } mapApiKey= { mapApi } libraries={ libs } defaultCenter = {defaultPosition}/>
         </Route>
         <Route path="/business">
         </Route>

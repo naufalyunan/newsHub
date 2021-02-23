@@ -1,5 +1,6 @@
 const initialState = {
     hospitals: [],
+    defaultPosition: {},
     currentPosition: {}
 }
 
@@ -9,6 +10,11 @@ const mapReducers = (state = initialState, action) => {
             return {
                 ...state,
                 hospitals: action.payload
+            }
+        case 'SET_DEFAULT_POSITION':
+            return {
+                ...state,
+                defaultPosition: action.payload
             }
         case 'SET_CURRENT_POSITION':
             return {

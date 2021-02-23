@@ -22,6 +22,13 @@ export const fetchHospitals = (url) => {
     }
 }
 
+export const setDefPos = (defPos) => {
+    return {
+        type: 'SET_DEFAULT_POSITION',
+        payload: defPos
+    }
+}
+
 export const setCurPos = (curPos) => {
     return {
         type: 'SET_CURRENT_POSITION',
@@ -29,7 +36,23 @@ export const setCurPos = (curPos) => {
     }
 }
 
-export const fetchPosition = () => {
+export const fetchDefaultPosition = () => {
+    return (dispatch) => {
+        navigator.geolocation.getCurrentPosition(position => {
+            let defaultPosition = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            }
+            dispatch(setDefPos(defaultPosition))
+          }, err => {
+            console.log(err);
+            let defaultPosition = { lat: -6.3, lng: 106.7 }            
+            dispatch(setDefPos(defaultPosition))
+          })
+    }
+}
+
+export const fetchCurrentPosition = () => {
     return (dispatch) => {
         navigator.geolocation.watchPosition(position => {
             let currentPosition = {

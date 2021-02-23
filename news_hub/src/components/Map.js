@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { GoogleMap, PolygonProps, Marker, Polygon, InfoWindow, useLoadScript } from '@react-google-maps/api'
 import jakartaDb from './../jakarta.json'
 import { useSelector } from 'react-redux'
@@ -9,28 +9,34 @@ export default function MapGoogle (props) {
         height: '80vh'
     }
     
-    let currentPosition = useSelector(state => state.maps.currentPosition)
+    // let currentPosition = useSelector(state => state.maps.currentPosition)
     const { data } = props
     const { defaultCenter } = props
     const { mapApiKey } = props
     const { libraries } = props
-    
+    const currentPosition = useSelector(state => state.maps.currentPosition)
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: mapApiKey,
         libraries
-    })
-
-    
+    }) 
 
     if (loadError) return "Error loading maps"
     if (!isLoaded) return "Loading..."
     
-    let curLoc = new window.google.maps.LatLng(currentPosition.lat, currentPosition.lng)
+    // let curLoc = new window.google.maps.LatLng(currentPosition.lat, currentPosition.lng)
     const clickArea = (e) => {
         // console.log(e.latLng);
         // console.log(window.google);
-        console.log(curLoc)
+        // console.log(curLoc)
+    }
+    
+    const changeColor = (coord, id) => {
+        let curLoc = new window.google.maps.LatLng(currentPosition.lat, currentPosition.lng)
+        let polygon = new window.google.maps.Polygon({paths: coord})
+        const color = new window.google.maps.geometry.poly.containsLocation(curLoc, polygon) ? "#000000" : "#FF0000"
+        console.log(color)
+        return color
     }
     // console.log(currentPosition);
     // console.log(curLoc);
@@ -40,7 +46,7 @@ export default function MapGoogle (props) {
             <GoogleMap
                 mapContainerStyle={ mapStyles }
                 zoom={13}
-                center={defaultCenter}
+                center={new window.google.maps.LatLng(defaultCenter)}
             >
                 {
                     data.map(el => {
@@ -55,6 +61,7 @@ export default function MapGoogle (props) {
                                 origin: new window.google.maps.Point(0,0),
                                 anchor: new window.google.maps.Point(10,10)
                             }}
+                            zIndex={7}
                             />
                         )
                     })
@@ -70,7 +77,7 @@ export default function MapGoogle (props) {
                                                 {
                                                     li.map((e,i) => {
                                                         let coord = []
-                                                        console.log(curLoc)
+                                                        // console.log(curLoc)
                                                         // console.log(typeof(curLoc.lat));
                                                         // console.log(resultColor);
                                                         return (
@@ -83,15 +90,14 @@ export default function MapGoogle (props) {
                                                                         })
                                                                     })
                                                                 }
-                                                                {/* let resultColor = new window.google.maps.geometry.poly.containsLocation(curLoc, coord) ? "#0000ff" : "#FF0000" */}
                                                                 <Polygon
                                                                     key={el.properties.KEL_NAME}
                                                                     path={coord}
                                                                     options= {{
-                                                                        strokeColor: "#FF0000",
+                                                                        strokeColor: changeColor(coord, el.properties.ID),
                                                                         strokeOpacity: 0.5,
                                                                         strokeWeight: 2,
-                                                                        fillColor: "#FF0000",
+                                                                        fillColor: changeColor(coord),
                                                                         fillOpacity: 0.2
                                                                     }}
                                                                     onClick = {clickArea}
